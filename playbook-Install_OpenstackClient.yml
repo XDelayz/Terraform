@@ -1,0 +1,28 @@
+---
+- name: Install OpenStackClient
+  hosts: all # Здесь можем указать имена конкретных хостов, но в моем случае я указал all что значит все
+  become: yes
+  tasks: 
+    - name: Update apt cache 
+      apt:
+        update_cache: yes # Обновление кеша, аналогично если бы мы запустили на сервере команду apt update
+
+    - name: Install python3-pip package
+      apt:
+        name: python3-pip # Указываем имя пакета который нужно установить
+        state: present
+
+    - name: Install openstackclient using pip3
+      pip:
+        name: python-openstackclient # Указываем имя пакета который нужно установить
+        state: present # state - это состояние пакета, present проверяет если пакет еще не установлен, то ставит его.
+
+# Настроек state есть несколько:
+{% /*
+present: установить пакет, если он еще не установлен.
+latest: установить последнюю доступную версию пакета.
+absent: удалить пакет, если он установлен на хосте.
+held: удержать пакет на текущей версии.
+purged: удалить пакет и все его настройки.
+*/ %}
+# End
