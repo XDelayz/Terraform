@@ -1,7 +1,7 @@
 ---
 - name: Install OpenStackClient
   hosts: all # Здесь можем указать имена конкретных хостов, но в моем случае я указал all что значит все
-  become: yes
+  become: yes # Параметр become при значении yes, делает все tasks от имени рута
   tasks: 
     - name: Update apt cache 
       apt:
