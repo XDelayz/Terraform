@@ -17,3 +17,4 @@ https://registry.terraform.io/providers/terraform-provider-openstack/openstack/l
 9. Группы безопасности
 10. Правила фаервола
 11. Балансировщик нагрузки
+![visual_terraform](https://github.com/XDelayz/Terraform/assets/118162868/d4df81fe-cbcd-4ae0-b441-77c84436382a)
