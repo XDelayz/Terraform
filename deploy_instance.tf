@@ -42,12 +42,18 @@ resource "openstack_compute_instance_v2" "instance_1" {
     volume_size           = 50
     boot_index            = 0
     destination_type      = "volume"
-    delete_on_termination = false
+    delete_on_termination = true # если выставить параметр true, после удаления инстанса будет удален и диск.
   }
   
   network {
     port                  = "${openstack_networking_port_v2.port_1.id}"
   }
+# Провижинг на Ansible который устанавливает опенстек клиент на сервере. Содержимое файла  playbook-Install_OpenstackClient.yml в этом же репо.
+  provisioner "local-exec" {
+    command = "ansible-playbook playbook-Install_OpenstackClient.yml"
+  }
+
+
 }
 
 # Создание форвардинга
@@ -60,8 +66,7 @@ resource "openstack_networking_portforwarding_v2" "portforwarding" {
   protocol                = "tcp"
 }
 
-/*
-Данные подключения к серверу по протоколу ssh 
-ssh root@var.external_ip -p 51100
-*/
+# Данные подключения к серверу по ssh ssh root@var.external_ip -p 51100
+
+
 
