@@ -1,3 +1,25 @@
+
+# Поиск id сети и после ее запись в переменную data.openstack_networking_network_v2.network.id
+data "openstack_networking_network_v2" "network" {
+  name                    = "Default Network #14114"
+}
+
+# Поиск id плавающего ip и после ее запись в переменную data.openstack_networking_floatingip_v2.floatingip_1.id
+data "openstack_networking_floatingip_v2" "floatingip_1" {
+  address                 = var.external_ip
+}
+
+# Создание порта и привязка к созданой подсети
+resource "openstack_networking_port_v2" "port_1" {
+  name                    = "port_1"
+  network_id              = data.openstack_networking_network_v2.network.id
+  
+  fixed_ip {
+    subnet_id             = "d3983844-ee11-4b40-88f1-a947aad5d314"
+    ip_address            = "192.168.2.22"
+  }
+}
+
 # Импортирование существующего локального публичного ключа 
 resource "openstack_compute_keypair_v2" "my-keypair" {
   name                    = "my-keypair"
@@ -24,6 +46,22 @@ resource "openstack_compute_instance_v2" "instance_1" {
   }
   
   network {
-    name                  = "Default Network #14114"
+    port                  = "${openstack_networking_port_v2.port_1.id}"
   }
 }
+
+# Создание форвардинга
+resource "openstack_networking_portforwarding_v2" "portforwarding" {
+  floatingip_id           = data.openstack_networking_floatingip_v2.floatingip_1.id
+  internal_ip_address     = "192.168.2.22"
+  external_port           = "51100"       # нестандартный порт ssh
+  internal_port           = "22"          # стандартный порт ssh
+  internal_port_id        = "${openstack_networking_port_v2.port_1.id}"
+  protocol                = "tcp"
+}
+
+/*
+Данные подключения к серверу по протоколу ssh 
+ssh root@var.external_ip -p 51100
+*/
+
