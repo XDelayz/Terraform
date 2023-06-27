@@ -1,0 +1,10 @@
+[server]
+dev ansible_host=192.168.2.9 ansible_user=demions ansible_ssh_port=51100 ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+
+# dev - имя сервера
+# [server] - название групы хостов, например если нужно запустить плейбук только к группе server, а у вас может быть этих груп server1 server2 и так далее.
+# ansible_host - указываем внешний ip адрес, по которому нам нужно было бы заходить на сервер
+# ansible_user - имя пользователя под которым ансибл будет выполнять команды
+# ansible_ssh_port - порт по которому будет происходить подключение на сервер
+# ansible_ssh_private_key_file - путь к вашему приватному ключу
