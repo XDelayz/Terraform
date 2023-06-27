@@ -49,6 +49,7 @@ resource "openstack_compute_instance_v2" "instance_1" {
     port                  = "${openstack_networking_port_v2.port_1.id}"
   }
 # Провижинг на Ansible который устанавливает опенстек клиент на сервере. Содержимое файла  playbook-Install_OpenstackClient.yml в этом же репо.
+# Важная деталь, плейбук не запустится если у вас в файле /etc/ansible/hosts не будут указаны креды для подключения на сервер, пример данных смотрите в файле hosts.
   provisioner "local-exec" {
     command = "ansible-playbook playbook-Install_OpenstackClient.yml"
   }
